@@ -29,6 +29,11 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_LIST_DIR}/physx/src/physx/include" "${CMAKE_CURRENT_LIST_DIR}/include"
         BYPRODUCTS "${CMAKE_CURRENT_LIST_DIR}/include"
     )
+
+    add_custom_command(TARGET physx-build-debug POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_LIST_DIR}/physx/src/pxshared/include/foundation" "${CMAKE_CURRENT_LIST_DIR}/include/foundation"
+        BYPRODUCTS "${CMAKE_CURRENT_LIST_DIR}/include/foundation"
+    )
 endif()
 
 set(physx_libraries
