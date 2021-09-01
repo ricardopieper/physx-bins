@@ -1,0 +1,4 @@
+/build
+/physx/src
+/physx/build-debug
+/physx/build-release
