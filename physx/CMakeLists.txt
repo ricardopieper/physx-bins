@@ -41,7 +41,7 @@ elseif(WIN32)
     set(TARGET_BUILD_PLATFORM windows)
     set(NV_USE_STATIC_WINCRT ON CACHE BOOL "Enable PhysX static lib generation" FORCE)
 
-    if(SP_DEBUG)
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
         set(NV_USE_DEBUG_WINCRT TRUE CACHE BOOL "Force PhysX to use Debug WINCRT" FORCE)
     else()
         set(NV_USE_DEBUG_WINCRT FALSE CACHE BOOL "Force PhysX to use Debug WINCRT" FORCE)
