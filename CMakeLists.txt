@@ -48,7 +48,12 @@ set(physx_libraries
 foreach(lib_name IN LISTS physx_libraries)
     add_library(${lib_name} INTERFACE)
     target_include_directories(${lib_name} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/include")
+
     string(TOLOWER "${CMAKE_BUILD_TYPE}" build_type_lowercase)
+    if("${build_type_lowercase}" STREQUAL "relwithdebinfo")
+        set(build_type_lowercase "release")
+    endif()
+
     if(UNIX)
         target_link_libraries(${lib_name} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/physx/bin/linux.clang/${build_type_lowercase}/lib${lib_name}_static.a")
     elseif(WIN32)
