@@ -46,7 +46,7 @@ set(physx_libraries
     PhysXPvdSDK
 )
 foreach(lib_name IN LISTS physx_libraries)
-    add_library(${lib_name} INTERFACE)
+    add_library(${lib_name} STATIC IMPORTED GLOBAL)
     target_include_directories(${lib_name} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/include")
 
     string(TOLOWER "${CMAKE_BUILD_TYPE}" build_type_lowercase)
@@ -55,10 +55,22 @@ foreach(lib_name IN LISTS physx_libraries)
     endif()
 
     if(UNIX)
-        target_link_libraries(${lib_name} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/physx/bin/linux.clang/${build_type_lowercase}/lib${lib_name}_static.a")
+        set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/linux.clang/${build_type_lowercase}/lib${lib_name}_static.a")
     elseif(WIN32)
-        target_link_libraries(${lib_name} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/physx/bin/win.x86_64.vc142.mt/${build_type_lowercase}/${lib_name}_static.lib")
+        set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/win.x86_64.vc142.mt/${build_type_lowercase}/${lib_name}_static.lib")
     else()
         message(FATAL_ERROR "Unknown target platform")
     endif()
 endforeach()
+
+target_link_libraries(PhysX INTERFACE dl)
+
+# Define physx library inter-dependencies so link ordering is correct.
+target_link_libraries(PhysX INTERFACE PhysXPvdSDK)
+target_link_libraries(PhysX INTERFACE PhysXCommon)
+target_link_libraries(PhysXCharacterKinematic INTERFACE PhysXCommon)
+target_link_libraries(PhysXCharacterKinematic INTERFACE PhysXExtensions)
+target_link_libraries(PhysXCooking INTERFACE PhysXCommon)
+target_link_libraries(PhysXCooking INTERFACE PhysXFoundation)
+target_link_libraries(PhysXExtensions INTERFACE PhysXFoundation)
+target_link_libraries(PhysXPvdSDK INTERFACE PhysXFoundation)
