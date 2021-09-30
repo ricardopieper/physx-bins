@@ -63,7 +63,9 @@ foreach(lib_name IN LISTS physx_libraries)
     endif()
 endforeach()
 
-target_link_libraries(PhysX INTERFACE dl)
+if(UNIX)
+    target_link_libraries(PhysX INTERFACE dl)
+endif()
 
 # Define physx library inter-dependencies so link ordering is correct.
 target_link_libraries(PhysX INTERFACE PhysXPvdSDK)
