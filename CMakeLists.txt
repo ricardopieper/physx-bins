@@ -44,6 +44,7 @@ set(physx_libraries
     PhysXExtensions
     PhysXFoundation
     PhysXPvdSDK
+    PhysXVehicle
 )
 foreach(lib_name IN LISTS physx_libraries)
     add_library(${lib_name} STATIC IMPORTED GLOBAL)
@@ -76,4 +77,5 @@ target_link_libraries(PhysXCooking INTERFACE PhysXCommon)
 target_link_libraries(PhysXCooking INTERFACE PhysXFoundation)
 target_link_libraries(PhysXExtensions INTERFACE PhysX)
 target_link_libraries(PhysXExtensions INTERFACE PhysXFoundation)
+target_link_libraries(PhysXExtensions INTERFACE PhysXVehicle)
 target_link_libraries(PhysXPvdSDK INTERFACE PhysXFoundation)
