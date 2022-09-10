@@ -49,6 +49,7 @@ set(physx_libraries
 foreach(lib_name IN LISTS physx_libraries)
     add_library(${lib_name} STATIC IMPORTED GLOBAL)
     target_include_directories(${lib_name} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/include")
+    target_compile_definitions(${lib_name} INTERFACE PX_PHYSX_STATIC_LIB)
 
     string(TOLOWER "${CMAKE_BUILD_TYPE}" build_type_lowercase)
     if("${build_type_lowercase}" STREQUAL "relwithdebinfo")
