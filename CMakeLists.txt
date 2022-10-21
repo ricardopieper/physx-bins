@@ -59,6 +59,7 @@ foreach(lib_name IN LISTS physx_libraries)
     if(UNIX)
         set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/linux.clang/${build_type_lowercase}/lib${lib_name}_static.a")
     elseif(WIN32)
+        set(CMAKE_EXE_LINKER_FLAGS "/ignore:4099") # Ignore warning about missing debug info
         set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/win.x86_64.vc142.mt/${build_type_lowercase}/${lib_name}_static.lib")
     else()
         message(FATAL_ERROR "Unknown target platform")
