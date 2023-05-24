@@ -5,8 +5,8 @@ project(physx VERSION 0.1)
 if("${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
     include(ExternalProject)
     ExternalProject_Add(physx-build-debug
-        GIT_REPOSITORY      https://github.com/NVIDIAGameWorks/PhysX.git
-        GIT_TAG             origin/4.1
+        GIT_REPOSITORY      https://github.com/ricardopieper/PhysX.git
+        GIT_TAG             origin/mac-arm64-build
         SOURCE_DIR          "${CMAKE_CURRENT_LIST_DIR}/physx/src"
         BINARY_DIR          "${CMAKE_CURRENT_LIST_DIR}/physx/build-debug"
         SOURCE_SUBDIR       "../"
@@ -56,11 +56,14 @@ foreach(lib_name IN LISTS physx_libraries)
         set(build_type_lowercase "release")
     endif()
 
-    if(UNIX)
+    if(LINUX)
         set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/linux.clang/${build_type_lowercase}/lib${lib_name}_static.a")
     elseif(WIN32)
         set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/win.x86_64.vc142.mt/${build_type_lowercase}/${lib_name}_static.lib")
         set_target_properties(${lib_name} PROPERTIES LINK_FLAGS "/DEBUG:NONE")
+
+    elseif(APPLE)
+        set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/mac.x86_64/${build_type_lowercase}/lib${lib_name}_static.a")
     else()
         message(FATAL_ERROR "Unknown target platform")
     endif()
