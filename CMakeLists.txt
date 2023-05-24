@@ -61,6 +61,7 @@ foreach(lib_name IN LISTS physx_libraries)
     elseif(WIN32)
         set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/win.x86_64.vc142.mt/${build_type_lowercase}/${lib_name}_static.lib")
         set_target_properties(${lib_name} PROPERTIES LINK_FLAGS "/DEBUG:NONE")
+
     elseif(APPLE)
         set_target_properties(${lib_name} PROPERTIES IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/physx/bin/mac.x86_64/${build_type_lowercase}/lib${lib_name}_static.a")
     else()
