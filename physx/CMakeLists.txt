@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(physx-build)
-
 set(PHYSX_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/src/physx")
 
 set(PX_OUTPUT_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}")
@@ -11,7 +10,7 @@ set(PX_GENERATE_STATIC_LIBRARIES ON CACHE BOOL "Enable static library generation
 set(ENV{PM_CMakeModules_PATH} ${CMAKE_CURRENT_LIST_DIR}/src/externals/cmakemodules)
 set(ENV{PM_PxShared_PATH} ${CMAKE_CURRENT_LIST_DIR}/src/pxshared)
 
-if(UNIX)
+if(LINUX)
 
     set(TARGET_BUILD_PLATFORM linux)
 
@@ -47,6 +46,19 @@ elseif(WIN32)
         set(NV_USE_DEBUG_WINCRT FALSE CACHE BOOL "Force PhysX to use Debug WINCRT" FORCE)
     endif()
 
+elseif(APPLE)
+    set(TARGET_BUILD_PLATFORM mac)
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "12.0.0")
+            add_compile_options(-Wno-error -Wno-bitwise-instead-of-logical -Wno-suggest-override -Wno-suggest-destructor-override)
+        endif()
+        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "11.0.0")
+            add_compile_options(-Wno-dtor-name)
+        endif()
+    endif()
+else()
+    message(FATAL_ERROR "Unsupported platform ${CMAKE_SYSTEM_NAME}" )
 endif()
 
 add_subdirectory(src/physx/compiler/public)

@@ -32,7 +32,7 @@
 
 #include <stddef.h>
 #if !defined(PX_GENERATE_META_DATA)
-#include <ciso646>  
+#include <ciso646>
 #endif
 /** \addtogroup foundation
   @{
@@ -70,13 +70,13 @@ Compiler defines, see http://sourceforge.net/p/predef/wiki/Compilers/
 #endif
 #elif defined(__clang__)
 #define PX_CLANG 1
-	#if defined (__clang_major__) 
+	#if defined (__clang_major__)
 		#define PX_CLANG_MAJOR __clang_major__
 	#elif defined (_clang_major)
 		#define PX_CLANG_MAJOR _clang_major
 	#else
 		#define PX_CLANG_MAJOR 0
-	#endif	
+	#endif
 #elif defined(__GNUC__) // note: __clang__ implies __GNUC__
 #define PX_GCC 1
 #else
@@ -100,8 +100,8 @@ Operating system defines, see http://sourceforge.net/p/predef/wiki/OperatingSyst
 #define PX_ANDROID 1
 #elif defined(__linux__) || defined (__EMSCRIPTEN__) // note: __ANDROID__ implies __linux__
 #define PX_LINUX 1
-#elif defined(__APPLE__) && (defined(__arm__) || defined(__arm64__))
-#define PX_IOS 1
+//#elif defined(__APPLE__) && (defined(__arm__) || defined(__arm64__))
+//#define PX_IOS 1
 #elif defined(__APPLE__)
 #define PX_OSX 1
 #elif defined(__ORBIS__)
@@ -115,7 +115,9 @@ Operating system defines, see http://sourceforge.net/p/predef/wiki/OperatingSyst
 /**
 Architecture defines, see http://sourceforge.net/p/predef/wiki/Architectures/
 */
-#if defined(__x86_64__) || defined(_M_X64) // ps4 compiler defines _M_X64 without value
+#if defined PX_OSX
+#define PX_ARM 1
+#elif defined(__x86_64__) || defined(_M_X64) // ps4 compiler defines _M_X64 without value
 #define PX_X64 1
 #elif defined(__i386__) || defined(_M_IX86) || defined (__EMSCRIPTEN__)
 #define PX_X86 1
@@ -255,8 +257,7 @@ family shortcuts
 // architecture
 #define PX_INTEL_FAMILY (PX_X64 || PX_X86)
 #define PX_ARM_FAMILY (PX_ARM || PX_A64)
-#define PX_P64_FAMILY (PX_X64 || PX_A64) // shortcut for 64-bit architectures
-
+#define PX_P64_FAMILY (PX_X64 || PX_A64 || PX_ARM) // shortcut for 64-bit architectures
 /**
 C++ standard library defines
 */
@@ -522,7 +523,7 @@ protected:                                                                      
 	Class& operator=(const Class&);
 
 #ifndef DISABLE_CUDA_PHYSX
-//CUDA is currently supported only on windows 
+//CUDA is currently supported only on windows
 #define PX_SUPPORT_GPU_PHYSX ((PX_WINDOWS_FAMILY) || (PX_LINUX && PX_X64))
 #else
 #define PX_SUPPORT_GPU_PHYSX 0
